@@ -1,0 +1,63 @@
+/*
+Link:
+https://www.geeksforgeeks.org/problems/find-the-number-of-islands/1
+
+prob:
+Find the number of islands
+
+
+
+*/
+
+class Solution {
+  public:
+    // Function to find the number of islands.
+    int numIslands(vector<vector<char>>& grid) {
+        // Code here
+        int n=grid.size();
+        int m=grid[0].size();
+        
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        int cnt=0;
+        
+        for(int row=0;row<n;row++){
+            for(int col=0;col<m;col++){
+                if(grid[row][col]=='1' && !vis[row][col]){
+                    bfs(row,col,vis,grid);
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+    private:
+    void bfs(int row , int col , vector<vector<int>>&vis, vector<vector<char>>&grid){
+        vis[row][col]=1;
+        
+        queue<pair<int,int>>q;
+        int n=grid.size();
+        int m=grid[0].size();
+        q.push({row,col});
+        while(!q.empty()){
+            int row = q.front().first;
+            int col = q.front().second;
+            q.pop();
+            
+            /*
+                8 direction 
+            */
+            for(int delRow=-1;delRow<=+1;delRow++){
+                for(int delCol =-1 ;delCol<=+1;delCol++){
+                    int nrow=row+delRow;
+                    int ncol=col+delCol;
+                    
+                    if(nrow>=0 && nrow<n && ncol>=0 && ncol<m &&
+                    !vis[nrow][ncol] && grid[nrow][ncol]=='1'){
+                        vis[nrow][ncol]=1;
+                        q.push({nrow,ncol});
+                    }
+                }
+            }
+        }
+    }
+};
